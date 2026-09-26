@@ -1,50 +1,72 @@
-// URL da API ou Webhook que conecta o FiveM ao site
-const API_URL = "https://SEU-SERVIDOR-OU-API.com/api/boletins"; 
+// URL da tua API em Node.js (Altera para o IP da tua VPS e porta configurada)
+const API_URL = "http://SEU_IP_VPS:3000/api/boletins";
 
-// Função para carregar dados reais vindos do servidor FiveM
+/**
+ * Procura os dados reais do MySQL através da API Node.js
+ */
 async function carregarDadosFiveM() {
+    const tabela = document.getElementById("lista-bo");
+
     try {
         const response = await fetch(API_URL);
+
+        if (!response.ok) {
+            throw new Error(`Erro na resposta da API: ${response.statusText}`);
+        }
+
         const data = await response.json();
 
-        // Atualizar contadores
+        // Atualizar os cards de estatísticas
         document.getElementById("total-bo").innerText = data.totalBo || 0;
         document.getElementById("total-prisoes").innerText = data.totalPrisoes || 0;
         document.getElementById("total-procurados").innerText = data.totalProcurados || 0;
 
-        const tabela = document.getElementById("lista-bo");
-        tabela.innerHTML = ""; // Limpa a mensagem "A carregar dados..."
+        // Limpar a mensagem de "A carregar..."
+        tabela.innerHTML = "";
 
+        // Verificar se existem boletins retornados
         if (!data.boletins || data.boletins.length === 0) {
-            tabela.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8;">Nenhum boletim de ocorrência registrado.</td></tr>`;
+            tabela.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">
+                        Nenhum boletim de ocorrência registrado no banco de dados.
+                    </td>
+                </tr>`;
             return;
         }
 
-        // Renderiza cada boletim vindo da base de dados do FiveM
+        // Renderizar cada linha da tabela com os dados do MySQL
         data.boletins.forEach(bo => {
             const statusClass = bo.status === "Fechado" ? "red" : "green";
-            const linha = `
-                <tr>
-                    <td>#BO-${bo.id}</td>
-                    <td>${bo.oficial}</td>
-                    <td>${bo.suspeito}</td>
-                    <td>${bo.infracao}</td>
-                    <td>${bo.data}</td>
-                    <td><span class="badge ${statusClass}">${bo.status}</span></td>
-                </tr>
+            
+            const linha = document.createElement("tr");
+            linha.innerHTML = `
+                <td>#BO-${bo.id}</td>
+                <td>${bo.oficial}</td>
+                <td>${bo.suspeito}</td>
+                <td>${bo.infracao}</td>
+                <td>${bo.data}</td>
+                <td><span class="badge ${statusClass}">${bo.status}</span></td>
             `;
-            tabela.innerHTML += linha;
+            tabela.appendChild(linha);
         });
+
     } catch (error) {
-        console.error("Erro ao carregar dados do FiveM:", error);
-        document.getElementById("lista-bo").innerHTML = `
+        console.error("Erro ao carregar dados do servidor FiveM:", error);
+        
+        tabela.innerHTML = `
             <tr>
-                <td colspan="6" style="text-align: center; color: #f87171;">Aguardando conexão com o servidor FiveM...</td>
+                <td colspan="6" style="text-align: center; color: #f87171; padding: 20px;">
+                    <i class="fa-solid fa-plug-circle-xmark"></i> 
+                    Não foi possível conectar ao servidor FiveM. Verifique a API.
+                </td>
             </tr>`;
     }
 }
 
-// Funções do Modal
+/**
+ * Controlos da interface (Modal de Registro)
+ */
 function abrirModal() {
     document.getElementById("modal-bo").style.display = "flex";
 }
@@ -53,12 +75,42 @@ function fecharModal() {
     document.getElementById("modal-bo").style.display = "none";
 }
 
-function salvarBO(event) {
+/**
+ * Envia um novo B.O. diretamente para a API para salvar no MySQL
+ */
+async function salvarBO(event) {
     event.preventDefault();
-    // Aqui podes adicionar o envio para a API via POST
-    alert("Para enviar dados para o jogo, configure a integração da API no servidor.");
-    fecharModal();
+
+    const oficial = document.getElementById("oficial").value;
+    const suspeito = document.getElementById("suspeito").value;
+    const infracao = document.getElementById("infracao").value;
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                oficial: oficial,
+                suspeito: suspeito,
+                infracao: infracao
+            })
+        });
+
+        if (response.ok) {
+            alert("Boletim registrado com sucesso!");
+            document.getElementById("form-bo").reset();
+            fecharModal();
+            carregarDadosFiveM(); // Atualiza a lista automaticamente
+        } else {
+            alert("Erro ao salvar o boletim no servidor.");
+        }
+    } catch (error) {
+        console.error("Erro na requisição POST:", error);
+        alert("Falha de comunicação com a API do servidor.");
+    }
 }
 
-// Carrega os dados assim que a página abre
+// Executa a busca de dados assim que a página é carregada
 window.onload = carregarDadosFiveM;
