@@ -67,11 +67,12 @@
                             <th>Infração</th>
                             <th>Data / Hora</th>
                             <th>Status</th>
+                            <th>Foto / Prova</th>
                         </tr>
                     </thead>
                     <tbody id="lista-bo-dashboard">
                         <tr>
-                            <td colspan="6" class="loading-td">
+                            <td colspan="7" class="loading-td">
                                 <i class="fa-solid fa-spinner fa-spin"></i> A carregar dados do servidor...
                             </td>
                         </tr>
@@ -101,11 +102,12 @@
                             <th>Infração</th>
                             <th>Data / Hora</th>
                             <th>Status</th>
+                            <th>Foto / Prova</th>
                         </tr>
                     </thead>
                     <tbody id="lista-bo-completa">
                         <tr>
-                            <td colspan="6" class="loading-td">
+                            <td colspan="7" class="loading-td">
                                 <i class="fa-solid fa-spinner fa-spin"></i> A carregar dados do servidor...
                             </td>
                         </tr>
@@ -130,11 +132,12 @@
                             <th>Oficial Responsável</th>
                             <th>Data do Alerta</th>
                             <th>Status</th>
+                            <th>Foto / Prova</th>
                         </tr>
                     </thead>
                     <tbody id="lista-procurados">
                         <tr>
-                            <td colspan="6" class="loading-td">
+                            <td colspan="7" class="loading-td">
                                 <i class="fa-solid fa-spinner fa-spin"></i> A carregar lista de procurados...
                             </td>
                         </tr>
@@ -165,6 +168,9 @@
                     <option value="Procurado">Procurado</option>
                     <option value="Fechado">Fechado / Preso</option>
                 </select>
+
+                <label for="imagem">URL da Imagem / Prova (Opcional):</label>
+                <input type="url" id="imagem" placeholder="Ex: https://i.imgur.com/exemplo.png">
 
                 <label for="descricao">Descrição Detalhada:</label>
                 <textarea id="descricao" rows="4" placeholder="Adicione relatos, apreensões ou detalhes..."></textarea>
