@@ -14,7 +14,6 @@
             <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
             <li><a href="#"><i class="fa-solid fa-file-invoice"></i> Boletins (B.O.)</a></li>
             <li><a href="#"><i class="fa-solid fa-user-ninja"></i> Procurados</a></li>
-            <li><a href="#"><i class="fa-solid fa-gear"></i> Configurações</a></li>
         </ul>
     </div>
 
@@ -54,9 +53,9 @@
                 <thead>
                     <tr>
                         <th>Nº B.O.</th>
-                        <th>Oficial responsável</th>
+                        <th>Oficial</th>
                         <th>Suspeito</th>
-                        <th>Infração / Motivo</th>
+                        <th>Infração</th>
                         <th>Data / Hora</th>
                         <th>Status</th>
                     </tr>
@@ -66,7 +65,7 @@
                         <td>#BO-1002</td>
                         <td>Oficial Silva</td>
                         <td>John Doe</td>
-                        <td>Direção Perigosa / Desobediência</td>
+                        <td>Direção Perigosa</td>
                         <td>2026-09-26 14:30</td>
                         <td><span class="badge red">Fechado</span></td>
                     </tr>
@@ -87,19 +86,16 @@
     <div id="modal-bo" class="modal">
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
-            <h2>Registrar Novo Boletim de Ocorrência</h2>
+            <h2>Registrar Novo B.O.</h2>
             <form id="form-bo" onsubmit="salvarBO(event)">
                 <label>Oficial Responsável:</label>
                 <input type="text" id="oficial" required placeholder="Ex: Agente Silva">
 
                 <label>Nome do Suspeito:</label>
-                <input type="text" id="suspeito" required placeholder="Ex: Nome do Jogador / Passaporte">
+                <input type="text" id="suspeito" required placeholder="Ex: Nome / Passaporte">
 
                 <label>Infração / Motivo:</label>
-                <input type="text" id="infracao" required placeholder="Ex: Roubo a Banco / Porte de Armas">
-
-                <label>Descrição do Ocorrido:</label>
-                <textarea id="descricao" rows="4" placeholder="Detalhes do ocorrido..."></textarea>
+                <input type="text" id="infracao" required placeholder="Ex: Roubo / Porte de Armas">
 
                 <button type="submit" class="btn-primary">Registrar B.O.</button>
             </form>
