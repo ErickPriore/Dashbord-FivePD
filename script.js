@@ -29,7 +29,6 @@ function salvarBO(event) {
 
     tabela.innerHTML = novaLinha + tabela.innerHTML;
 
-    // Atualiza contadores
     let totalBO = document.getElementById("total-bo");
     totalBO.innerText = parseInt(totalBO.innerText) + 1;
 
