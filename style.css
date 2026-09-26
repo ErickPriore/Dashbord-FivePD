@@ -36,7 +36,6 @@ body {
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 8px;
-    transition: 0.3s;
 }
 
 .sidebar li a:hover, .sidebar li a.active {
@@ -64,7 +63,6 @@ header {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 .btn-primary:hover {
@@ -130,7 +128,6 @@ th {
 .badge.red { background-color: #ef444422; color: #f87171; }
 .badge.green { background-color: #22c55e22; color: #4ade80; }
 
-/* Modal CSS */
 .modal {
     display: none;
     position: fixed;
@@ -157,7 +154,7 @@ th {
 }
 
 form label { display: block; margin-top: 10px; margin-bottom: 5px; color: #94a3b8; }
-form input, form textarea {
+form input {
     width: 100%;
     padding: 8px;
     background-color: #0f172a;
