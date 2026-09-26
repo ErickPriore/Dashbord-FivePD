@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Policial - FiveM</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2><i class="fa-solid fa-shield-halved"></i> LSPD Central</h2>
+        <ul>
+            <li><a href="#" class="active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-file-invoice"></i> Boletins (B.O.)</a></li>
+            <li><a href="#"><i class="fa-solid fa-user-ninja"></i> Procurados</a></li>
+            <li><a href="#"><i class="fa-solid fa-gear"></i> Configurações</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Painel de Ocorrências Policiais</h1>
+            <button class="btn-primary" onclick="abrirModal()"><i class="fa-solid fa-plus"></i> Novo B.O.</button>
+        </header>
+
+        <section class="stats">
+            <div class="card">
+                <i class="fa-solid fa-folder-open icon"></i>
+                <div>
+                    <h3>Ocorrências Hoje</h3>
+                    <p id="total-bo">12</p>
+                </div>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-handcuffs icon"></i>
+                <div>
+                    <h3>Prisões Efetuadas</h3>
+                    <p id="total-prisoes">8</p>
+                </div>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-triangle-exclamation icon"></i>
+                <div>
+                    <h3>Alerta de Procurados</h3>
+                    <p id="total-procurados">3</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="table-container">
+            <h2>Boletins de Ocorrência Recentes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nº B.O.</th>
+                        <th>Oficial responsável</th>
+                        <th>Suspeito</th>
+                        <th>Infração / Motivo</th>
+                        <th>Data / Hora</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-bo">
+                    <tr>
+                        <td>#BO-1002</td>
+                        <td>Oficial Silva</td>
+                        <td>John Doe</td>
+                        <td>Direção Perigosa / Desobediência</td>
+                        <td>2026-09-26 14:30</td>
+                        <td><span class="badge red">Fechado</span></td>
+                    </tr>
+                    <tr>
+                        <td>#BO-1001</td>
+                        <td>Agente Costa</td>
+                        <td>Carlos Santos</td>
+                        <td>Porte Ilegal de Armas</td>
+                        <td>2026-09-26 11:15</td>
+                        <td><span class="badge green">Em Investigação</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Modal Novo BO -->
+    <div id="modal-bo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Registrar Novo Boletim de Ocorrência</h2>
+            <form id="form-bo" onsubmit="salvarBO(event)">
+                <label>Oficial Responsável:</label>
+                <input type="text" id="oficial" required placeholder="Ex: Agente Silva">
+
+                <label>Nome do Suspeito:</label>
+                <input type="text" id="suspeito" required placeholder="Ex: Nome do Jogador / Passaporte">
+
+                <label>Infração / Motivo:</label>
+                <input type="text" id="infracao" required placeholder="Ex: Roubo a Banco / Porte de Armas">
+
+                <label>Descrição do Ocorrido:</label>
+                <textarea id="descricao" rows="4" placeholder="Detalhes do ocorrido..."></textarea>
+
+                <button type="submit" class="btn-primary">Registrar B.O.</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
