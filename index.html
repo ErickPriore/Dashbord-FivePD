@@ -6,187 +6,88 @@
     <title>Painel Policial - FivePD SP</title>
     
     <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css?v=2.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS EMBUTIDO PARA GARANTIR QUE FUNCIONA MESMO COM ERRO DE LINK -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #111827;
+            padding: 28px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #1f2937;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #ffffff;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px; top: 16px;
+            font-size: 24px;
+            color: #9ca3af;
+            cursor: pointer;
+        }
+
+        .modal h2 {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            color: #f8fafc;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0b0f19;
+            border: 1px solid #1f2937;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
-    <div class="sidebar">
-        <h2><i class="fa-solid fa-shield-halved"></i> FivePD SP</h2>
-        <ul>
-            <li><a href="#" id="nav-dashboard" class="active" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="#" id="nav-boletins" onclick="mudarAba('boletins')"><i class="fa-solid fa-file-invoice"></i> Boletins (B.O.)</a></li>
-            <li><a href="#" id="nav-procurados" onclick="mudarAba('procurados')"><i class="fa-solid fa-user-ninja"></i> Procurados</a></li>
-        </ul>
-    </div>
-
-    <div class="main-content">
-        <!-- SEÇÃO: DASHBOARD -->
-        <section id="aba-dashboard" class="aba-conteudo active">
-            <header>
-                <h1>Painel Geral - FivePD SP</h1>
-                <button class="btn-primary" onclick="abrirModal()"><i class="fa-solid fa-plus"></i> Novo B.O.</button>
-            </header>
-
-            <section class="stats">
-                <div class="card">
-                    <i class="fa-solid fa-folder-open icon"></i>
-                    <div>
-                        <h3>Ocorrências Hoje</h3>
-                        <p id="total-bo">0</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <i class="fa-solid fa-handcuffs icon"></i>
-                    <div>
-                        <h3>Prisões Efetuadas</h3>
-                        <p id="total-prisoes">0</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <i class="fa-solid fa-triangle-exclamation icon"></i>
-                    <div>
-                        <h3>Alerta de Procurados</h3>
-                        <p id="total-procurados">0</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="table-container">
-                <h2>Boletins de Ocorrência Recentes</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nº B.O.</th>
-                            <th>Oficial</th>
-                            <th>Suspeito</th>
-                            <th>Infração</th>
-                            <th>Data / Hora</th>
-                            <th>Status</th>
-                            <th>Foto / Prova</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-bo-dashboard">
-                        <tr>
-                            <td colspan="7" class="loading-td">
-                                <i class="fa-solid fa-spinner fa-spin"></i> A carregar dados do servidor...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </section>
-
-        <!-- SEÇÃO: BOLETINS (B.O.) -->
-        <section id="aba-boletins" class="aba-conteudo">
-            <header>
-                <h1>Lista Completa de Boletins de Ocorrência</h1>
-                <button class="btn-primary" onclick="abrirModal()"><i class="fa-solid fa-plus"></i> Novo B.O.</button>
-            </header>
-
-            <div class="search-bar">
-                <input type="text" id="busca-bo" placeholder="Pesquisar por Oficial, Suspeito ou Nº B.O..." onkeyup="filtrarBOs()">
-            </div>
-
-            <section class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nº B.O.</th>
-                            <th>Oficial</th>
-                            <th>Suspeito</th>
-                            <th>Infração</th>
-                            <th>Data / Hora</th>
-                            <th>Status</th>
-                            <th>Foto / Prova</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-bo-completa">
-                        <tr>
-                            <td colspan="7" class="loading-td">
-                                <i class="fa-solid fa-spinner fa-spin"></i> A carregar dados do servidor...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </section>
-
-        <!-- SEÇÃO: PROCURADOS -->
-        <section id="aba-procurados" class="aba-conteudo">
-            <header>
-                <h1>Lista de Indivíduos Procurados (FivePD SP)</h1>
-            </header>
-
-            <section class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nº B.O.</th>
-                            <th>Suspeito / Passaporte</th>
-                            <th>Motivo / Infração</th>
-                            <th>Oficial Responsável</th>
-                            <th>Data do Alerta</th>
-                            <th>Status</th>
-                            <th>Foto / Prova</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-procurados">
-                        <tr>
-                            <td colspan="7" class="loading-td">
-                                <i class="fa-solid fa-spinner fa-spin"></i> A carregar lista de procurados...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </section>
-    </div>
-
-    <!-- Modal Novo BO -->
-    <div id="modal-bo" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="fecharModal()">&times;</span>
-            <h2>Registrar Novo B.O. (FivePD SP)</h2>
-            <form id="form-bo" onsubmit="salvarBO(event)">
-                <div class="form-group">
-                    <label for="oficial">Oficial Responsável:</label>
-                    <input type="text" id="oficial" required placeholder="Ex: Agente Silva">
-                </div>
-
-                <div class="form-group">
-                    <label for="suspeito">Nome do Suspeito / Passaporte:</label>
-                    <input type="text" id="suspeito" required placeholder="Ex: Nome ou ID do Jogador">
-                </div>
-
-                <div class="form-group">
-                    <label for="infracao">Infração / Motivo:</label>
-                    <input type="text" id="infracao" required placeholder="Ex: Roubo / Porte de Armas">
-                </div>
-
-                <div class="form-group">
-                    <label for="status">Status Inicial:</label>
-                    <select id="status" required>
-                        <option value="Em Investigação">Em Investigação</option>
-                        <option value="Procurado">Procurado</option>
-                        <option value="Fechado">Fechado / Preso</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="imagem">URL da Imagem / Prova (Opcional):</label>
-                    <input type="url" id="imagem" placeholder="Ex: https://i.imgur.com/exemplo.png">
-                </div>
-
-                <div class="form-group">
-                    <label for="descricao">Descrição Detalhada:</label>
-                    <textarea id="descricao" rows="3" placeholder="Adicione relatos, apreensões ou detalhes..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-primary" style="margin-top: 10px; width: 100%;">Registrar B.O.</button>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
